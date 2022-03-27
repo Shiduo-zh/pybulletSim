@@ -4,7 +4,6 @@ import os
 import torch
 import torch.nn as nn
 
-from a2c_ppo_acktr.envs import VecNormalize
 
 
 # Get a render function
@@ -19,13 +18,13 @@ def get_render_func(venv):
     return None
 
 
-def get_vec_normalize(venv):
-    if isinstance(venv, VecNormalize):
-        return venv
-    elif hasattr(venv, 'venv'):
-        return get_vec_normalize(venv.venv)
+# def get_vec_normalize(venv):
+#     if isinstance(venv, VecNormalize):
+#         return venv
+#     elif hasattr(venv, 'venv'):
+#         return get_vec_normalize(venv.venv)
 
-    return None
+#     return None
 
 
 # Necessary for my KFAC implementation.
@@ -37,6 +36,8 @@ class AddBias(nn.Module):
     def forward(self, x):
         if x.dim() == 2:
             bias = self._bias.t().view(1, -1)
+        elif x.dim()==1:
+            bias=self._bias.t().view(-1)
         else:
             bias = self._bias.t().view(1, -1, 1, 1)
 

@@ -19,7 +19,6 @@ class PybulletRobot:
         except AttributeError:
             self.pb_control_mode = pb_control_mode
         self.pb_client = bullet_client.BulletClient(connection_mode=pybullet.DIRECT) if pb_client is None else pb_client
-
         self.build_robot_model()
 
     def load_robot_model(self):
@@ -27,8 +26,10 @@ class PybulletRobot:
         raise NotImplementedError("load_robot_model is not implemented")
     def set_default_joint_states(self):
         pass
+    
     def reset_joint_states(self):
-        pass
+        default_state=np.zeros(12)
+        super().send_joints_cmd(default_state)
     
     def build_robot_model(self):
         """ initialization sequence to build and set the robot model """
@@ -75,7 +76,7 @@ class PybulletRobot:
         Returns:
             limits: a np array of joint limits for the actual robot command, shape (2, n_valid_joints)
         """
-        #joint_info数组：a[8]和a[9]指机体位置的Low和high，a[11]指运动最大速度,a[12]指机体最大扭矩（描述关节的转动能力）
+        
         limits = []
         for joint_id in self.valid_joint_ids:
             joint_info = self.pb_client.getJointInfo(self.body_id, joint_id)

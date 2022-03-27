@@ -21,6 +21,7 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
             camera_fov_kwargs= dict(),
             simulate_timestep= 1./500,
             bullet_debug= False, # if true, will addUserDebugParameter
+            env='thin_obstacle',
             **pb_kwargs,
         ):
         self.robot_type = robot_type
@@ -32,8 +33,11 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
         self.camera_fov_kwargs.update(camera_fov_kwargs)
         self.bullet_debug = bullet_debug
         self.valid_joint_types = [p.JOINT_REVOLUTE, p.JOINT_PRISMATIC]
-        
+         
         super().__init__(**pb_kwargs)
+        self.thigh_joints_id=list()
+        if(robot_type=='a1'):
+            self.get_thigh_joints()   
         self.pb_client.setTimeStep(simulate_timestep)
         self.pb_client.setGravity(0,0,-9.81)
 
@@ -58,6 +62,13 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
             flags= p.URDF_USE_SELF_COLLISION,
             useFixedBase= False
         )
+    def get_thigh_joints(self):
+        joints_id=self.valid_joint_ids
+        body_id=self.body_id
+        for joint_id in joints_id:
+            joint_info=p.getJointInfo(body_id,joint_id)
+            if(b'thigh' in joint_info[1]):
+                self.thigh_joints_id.append(joint_info[0])
         
 
     def set_default_joint_states(self):

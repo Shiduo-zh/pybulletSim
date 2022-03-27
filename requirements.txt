@@ -1,0 +1,24 @@
+brotlipy==0.7.0
+certifi==2021.10.8
+cffi @ file:///C:/ci/cffi_1636523946399/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+conda==4.11.0
+conda-content-trust @ file:///tmp/build/80754af9/conda-content-trust_1617045594566/work
+conda-package-handling @ file:///C:/ci/conda-package-handling_1618262410900/work
+cryptography @ file:///C:/ci/cryptography_1639414720302/work
+ffmpy3==0.2.4
+idna @ file:///tmp/build/80754af9/idna_1637925883363/work
+menuinst @ file:///C:/ci/menuinst_1631733438520/work
+numpy==1.22.3
+pycosat==0.6.3
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1635333100036/work
+PySocks @ file:///C:/ci/pysocks_1605307512533/work
+pywin32==302
+requests @ file:///opt/conda/conda-bld/requests_1641824580448/work
+ruamel-yaml-conda @ file:///C:/ci/ruamel_yaml_1616016898638/work
+six @ file:///tmp/build/80754af9/six_1623709665295/work
+tqdm @ file:///tmp/build/80754af9/tqdm_1635330843403/work
+urllib3==1.26.7
+win-inet-pton @ file:///C:/ci/win_inet_pton_1605306162074/work
+wincertstore==0.2
