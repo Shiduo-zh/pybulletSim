@@ -17,10 +17,13 @@ class Trajectory(object):
         action_shape:action space in envs
                  """
         #trajetory:(s1,a1,r1,s2,a2,r2,s3,a3,r3....sn,an,rn,s(n+1))
-        action_shape=action_space.shape[0]
+        self.action_shape=action_space.shape[0]
+        self.prop_shape=prop_shape
+        self.visual_shape=visual_shape
+        
         self.obs_prop = torch.zeros(num_steps+1, *prop_shape)
         self.obs_visual=torch.zeros(num_steps+1,*visual_shape)
-        self.actions = torch.zeros(num_steps, action_shape)
+        self.actions = torch.zeros(num_steps, self.action_shape)
         #reward is the immediately reward for correspoding step
         self.rewards = torch.zeros(num_steps, 1)
         self.value_preds = torch.zeros(num_steps + 1, 1)
@@ -61,10 +64,21 @@ class Trajectory(object):
         self.step = (self.step + 1) % self.num_steps
 
     def after_update(self):
-        self.obs_prop[0].copy_(self.obs_prop[-1])
-        self.obs_visual[0].copy_(self.obs_visual[-1])
-        self.masks[0].copy_(self.masks[-1])
-        self.bad_masks[0].copy_(self.bad_masks[-1])
+        # self.obs_prop[0].copy_(self.obs_prop[-1])
+        # self.obs_visual[0].copy_(self.obs_visual[-1])
+        # self.masks[0].copy_(self.masks[-1])
+        # self.bad_masks[0].copy_(self.bad_masks[-1])
+        num_steps=self.num_steps
+        self.obs_prop = torch.zeros(num_steps+1, *self.prop_shape)
+        self.obs_visual=torch.zeros(num_steps+1,*self.visual_shape)
+        self.actions = torch.zeros(num_steps, self.action_shape)
+        self.rewards = torch.zeros(num_steps, 1)
+        self.value_preds = torch.zeros(num_steps + 1, 1)
+        self.returns = torch.zeros(num_steps + 1, 1)
+        self.action_log_probs = torch.zeros(num_steps, 1)
+        self.masks = torch.ones(num_steps+1, 1)
+        self.bad_masks = torch.ones(num_steps+1, 1)
+        self.step=0
 
     def compute_returns(self,
                         next_value,

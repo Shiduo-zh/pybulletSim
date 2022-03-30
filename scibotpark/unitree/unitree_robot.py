@@ -7,7 +7,8 @@ import pybullet_data as pb_data
 from pybullet_utils import bullet_client
 
 current_file_path = os.path.dirname(os.path.realpath(__file__))
-
+DEFAULT_STATES=[0.037199,    0.660252,   -1.200187,   -0.028954,    0.618814,   -1.183148,    
+                0.048225,    0.690008,   -1.254787,   -0.050525,    0.661355,   -1.243304]
 
 from scibotpark.pybullet.robot import PybulletRobot, DeltaPositionControlMixin
 from scibotpark.unitree.peripherals import unitree_camera_orientations, unitree_camera_positions
@@ -21,7 +22,6 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
             camera_fov_kwargs= dict(),
             simulate_timestep= 1./500,
             bullet_debug= False, # if true, will addUserDebugParameter
-            env='thin_obstacle',
             **pb_kwargs,
         ):
         self.robot_type = robot_type
@@ -59,9 +59,10 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
             urdf_file,
             self.default_base_transform[:3],
             self.default_base_transform[3:],
-            flags= p.URDF_USE_SELF_COLLISION,
+            flags= p.URDF_USE_SELF_COLLISION | p.URDF_USE_INERTIA_FROM_FILE,
             useFixedBase= False
         )
+
     def get_thigh_joints(self):
         joints_id=self.valid_joint_ids
         body_id=self.body_id
@@ -73,12 +74,13 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
 
     def set_default_joint_states(self):
         # record the initial joint states into self.default_joint_states
-        self.default_joint_states = []
+        self.default_joint_states=DEFAULT_STATES
+        #self.default_joint_states = []
         self.joint_debug_ids = []
         joint_limits = self.get_cmd_limits()
         for idx, j in enumerate(self.valid_joint_ids):
             jointState = self.pb_client.getJointState(self.body_id,j)
-            self.default_joint_states.append(jointState[0])
+            #self.default_joint_states.append(jointState[0])
             if self.bullet_debug:
                 self.joint_debug_ids.append(self.pb_client.addUserDebugParameter(
                     str(self.pb_client.getJointInfo(self.body_id,j)[1]),
@@ -86,6 +88,7 @@ class UniTreeRobot(DeltaPositionControlMixin, PybulletRobot):
                     joint_limits[1, idx],
                     jointState[0]
                 ))
+        self.default_joint_states=DEFAULT_STATES
 
     def reset_joint_states(self):
         for idx, j in enumerate(self.valid_joint_ids):

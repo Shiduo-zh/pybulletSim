@@ -28,8 +28,8 @@ class PybulletRobot:
         pass
     
     def reset_joint_states(self):
-        default_state=np.zeros(12)
-        super().send_joints_cmd(default_state)
+        pass
+        
     
     def build_robot_model(self):
         """ initialization sequence to build and set the robot model """

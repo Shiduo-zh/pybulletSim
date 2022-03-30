@@ -3,7 +3,7 @@ import time
 
 # class Dog:
 p.connect(p.GUI)
-plane = p.loadURDF("plane.urdf")
+plane = p.loadURDF("a1/urdf/plane.urdf")
 p.setGravity(0,0,-9.8)
 p.setTimeStep(1./500)
 #p.setDefaultContactERP(0)

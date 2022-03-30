@@ -119,11 +119,12 @@ def get_args():
     parser.add_argument(
         '--log-interval',
         default=10,
+        type=int,
         help='log interval, one log per n steps'
     )
     parser.add_argument(
         '--save-interval',
-        default=100,
+        default=10,
         type=int,
         help='save interval, one save per n steps'
     )
@@ -133,9 +134,15 @@ def get_args():
         help='dir to save agent logs'
     )
     parser.add_argument(
+        '--run-id',
+        default='0',
+        help='experiment run id '
+    )
+    parser.add_argument(
         '--save-dir',
         default='./trained_models'
     )
+    
 
     args=parser.parse_args()
     return args
